@@ -13,6 +13,7 @@
 		AED88B7924E5A40B00815B34 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED88B7724E5A40B00815B34 /* Main.storyboard */; };
 		AED88B7B24E5A40E00815B34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AED88B7A24E5A40E00815B34 /* Assets.xcassets */; };
 		AED88B7E24E5A40E00815B34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AED88B7C24E5A40E00815B34 /* LaunchScreen.storyboard */; };
+		AED88B8624E5A43300815B34 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED88B8524E5A43300815B34 /* BlurView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		AED88B7A24E5A40E00815B34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AED88B7D24E5A40E00815B34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AED88B7F24E5A40E00815B34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AED88B8524E5A43300815B34 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				AED88B7124E5A40B00815B34 /* AppDelegate.swift */,
 				AED88B7324E5A40B00815B34 /* SceneDelegate.swift */,
 				AED88B7524E5A40B00815B34 /* ViewController.swift */,
+				AED88B8524E5A43300815B34 /* BlurView.swift */,
 				AED88B7724E5A40B00815B34 /* Main.storyboard */,
 				AED88B7A24E5A40E00815B34 /* Assets.xcassets */,
 				AED88B7C24E5A40E00815B34 /* LaunchScreen.storyboard */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED88B7624E5A40B00815B34 /* ViewController.swift in Sources */,
+				AED88B8624E5A43300815B34 /* BlurView.swift in Sources */,
 				AED88B7224E5A40B00815B34 /* AppDelegate.swift in Sources */,
 				AED88B7424E5A40B00815B34 /* SceneDelegate.swift in Sources */,
 			);
