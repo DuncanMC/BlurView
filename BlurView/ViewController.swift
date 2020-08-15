@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var blurSlider: UISlider!
     @IBOutlet weak var blurView: BlurView!
     @IBOutlet weak var blurOutputImageView: UIImageView!
-    @IBOutlet weak var radiusLabel: UILabel!
+    @IBOutlet weak var radiusLabel: UITextField!
 
     var radiusValue: CGFloat = 0 {
         didSet {
@@ -26,7 +26,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        radiusValue = 10
+        radiusValue = 0.1
         blurView.updateBlurImage = { image in
             self.blurOutputImageView.image = image
         }
@@ -39,9 +39,23 @@ class ViewController: UIViewController {
         blurView.blur = blurSwitch.isOn
     }
     @IBAction func handleBlurSlider(_ sender: Any) {
-        radiusValue = CGFloat(blurSlider.value)
+        radiusValue = max( CGFloat(blurSlider.value), 0)
     }
+}
 
-
+extension ViewController: UITextFieldDelegate {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        radiusValue = min(max(CGFloat(Float(radiusLabel.text ?? "0.1") ?? 0), 0), 100)
+        print(radiusValue)
+        return true
+    }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        DispatchQueue.main.async { textField.selectAll(textField) }
+        return true
+    }
 }
 

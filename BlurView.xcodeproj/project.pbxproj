@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AECD524F24E61DEA00F86722 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECD524E24E61DEA00F86722 /* Dispatcher.swift */; };
 		AED88B7224E5A40B00815B34 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED88B7124E5A40B00815B34 /* AppDelegate.swift */; };
 		AED88B7424E5A40B00815B34 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED88B7324E5A40B00815B34 /* SceneDelegate.swift */; };
 		AED88B7624E5A40B00815B34 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED88B7524E5A40B00815B34 /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AECD524E24E61DEA00F86722 /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		AED88B6E24E5A40B00815B34 /* BlurView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlurView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AED88B7124E5A40B00815B34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AED88B7324E5A40B00815B34 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			children = (
 				AED88B7124E5A40B00815B34 /* AppDelegate.swift */,
 				AED88B7324E5A40B00815B34 /* SceneDelegate.swift */,
+				AECD524E24E61DEA00F86722 /* Dispatcher.swift */,
 				AED88B7524E5A40B00815B34 /* ViewController.swift */,
 				AED88B8524E5A43300815B34 /* BlurView.swift */,
 				AED88B7724E5A40B00815B34 /* Main.storyboard */,
@@ -145,6 +148,7 @@
 				AED88B8624E5A43300815B34 /* BlurView.swift in Sources */,
 				AED88B7224E5A40B00815B34 /* AppDelegate.swift in Sources */,
 				AED88B7424E5A40B00815B34 /* SceneDelegate.swift in Sources */,
+				AECD524F24E61DEA00F86722 /* Dispatcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

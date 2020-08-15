@@ -7,17 +7,20 @@
 //
 
 import UIKit
-typealias  ImageCompletion  = (UIImage) -> Void
+typealias  ImageCompletion  = (UIImage?) -> Void
 class BlurView: UIView {
 
     public var updateBlurImage: ImageCompletion? = nil
 
     lazy var blurLayer: CALayer = {
         let newLayer = CALayer()
-        self.layer.addSublayer(newLayer)
         newLayer.isOpaque = true
         return newLayer
     }()
+
+    override func awakeFromNib() {
+        self.layer.addSublayer(blurLayer)
+    }
 
    public var blur: Bool = true {
         didSet {
@@ -40,26 +43,33 @@ class BlurView: UIView {
 
     func applyBlur() {
         let context = CIContext(options: nil)
+        blurLayer.contents = nil
+
         self.makeBlurredImage(with: blurLevel, context: context, completed: { processedImage in
-            self.blurLayer.contents = processedImage.cgImage
+            self.blurLayer.contents = processedImage?.cgImage
             self.updateBlurImage?(processedImage)
         })
     }
+
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
 
-    private func makeBlurredImage(with level: CGFloat, context: CIContext, completed: @escaping (UIImage) -> Void) {
+    private func makeBlurredImage(with level: CGFloat, context: CIContext, completed: @escaping (UIImage?) -> Void) {
         // screen shot
         layer.isOpaque = true
-
         UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 1)
         self.layer.render(in: UIGraphicsGetCurrentContext()!)
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         let beginImage = CIImage(image: resultImage)
+
+        guard level != 0 else {
+            completed(resultImage)
+            return
+        }
 
 
         //Clamp the image
