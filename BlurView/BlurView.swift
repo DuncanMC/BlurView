@@ -8,9 +8,32 @@
 
 import UIKit
 typealias  ImageCompletion  = (UIImage?) -> Void
+
+/**
+ This class adds a blur layer on top of its contents to blur iteslf and it's subviews by a variable amount.
+ It is similar to the blur effect created by a UIVisualEffectView, but it provides a variable blur amount. It also blurs the view and it's subviews rather than blurring the content that appears under it.
+
+ */
 class BlurView: UIView {
 
+    //MARK: Set this completion handler to receive updated blur images if desired
     public var updateBlurImage: ImageCompletion? = nil
+
+
+   //MARK: Set blur = true to add a blur layer, blur = false to disable view blurring
+   public var blur: Bool = true {
+        didSet {
+            blurLayer.isHidden = !blur
+            applyBlur()
+        }
+    }
+
+    //MARK: This controls the blur radius for the blur. 0 = no blur. Larger values = more blur. Default = 10
+    public var blurLevel: CGFloat = 10 {
+        didSet {
+            applyBlur()
+        }
+    }
 
     lazy var blurLayer: CALayer = {
         let newLayer = CALayer()
@@ -23,30 +46,14 @@ class BlurView: UIView {
         self.clipsToBounds = true
     }
 
-   public var blur: Bool = true {
-        didSet {
-            blurLayer.isHidden = !blur
-            applyBlur()
-        }
-    }
 
-    public var blurLevel: CGFloat = 10 {
-        didSet {
-            applyBlur()
-        }
-    }
 
-    override var frame: CGRect {
+    override var bounds: CGRect {
         didSet {
-            print("Frame = \(frame)")
-        }
-    }
-
-    public func handleResize()
-    {
-        blurLayer.frame = self.bounds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
-            self.applyBlur()
+            blurLayer.frame = self.bounds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+                self.applyBlur()
+            }
         }
     }
 

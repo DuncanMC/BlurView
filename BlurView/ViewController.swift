@@ -33,9 +33,6 @@ class ViewController: UIViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        blurView.handleResize()
-    }
     override func viewDidAppear(_ animated: Bool) {
         blurView.applyBlur()
         UIView.animate(withDuration: 0.2, delay: 0.5, options: [], animations: {
@@ -59,7 +56,6 @@ extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         radiusValue = min(max(CGFloat(Float(radiusLabel.text ?? "0.1") ?? 0), 0), 100)
-        print(radiusValue)
         return true
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
