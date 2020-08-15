@@ -31,8 +31,14 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="test image" translatesAutoresizingMaskIntoConstraints="NO" id="ek1-on-zXd">
-                                        <rect key="frame" x="34.666666666666657" y="34.666666666666657" width="276.66666666666674" height="276.66666666666674"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text to be blurred" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fp-YA-Hni">
+                                        <rect key="frame" x="32" y="152" width="282" height="42"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="test image" translatesAutoresizingMaskIntoConstraints="NO" id="ek1-on-zXd">
+                                        <rect key="frame" x="34" y="40" width="276.66666666666674" height="276.66666666666674"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="ek1-on-zXd" secondAttribute="height" multiplier="1:1" id="cG1-0q-ukh"/>
                                         </constraints>
@@ -42,12 +48,6 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text to be blurred" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fp-YA-Hni">
-                                        <rect key="frame" x="32" y="152" width="282" height="42"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.78431372549019607" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -95,12 +95,20 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zJh-Dj-ncq" secondAttribute="height" multiplier="1:1" id="aiL-Mc-tDP"/>
                                 </constraints>
+                            </imageView>
+                            <visualEffectView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fa8-3a-esf">
+                                <rect key="frame" x="34" y="506" width="346" height="346"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="EYP-i6-qwn">
+                                    <rect key="frame" x="0.0" y="0.0" width="346" height="346"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="systemMaterial"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                        <integer key="value" value="1"/>
+                                        <integer key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                            </imageView>
+                            </visualEffectView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UYd-vJ-r5c">
                                 <rect key="frame" x="349" y="98" width="55" height="34"/>
                                 <constraints>
@@ -117,7 +125,9 @@
                         <constraints>
                             <constraint firstItem="vlb-GV-MEA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1c6-HR-nJa"/>
                             <constraint firstItem="Lpl-nB-hrR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="4AD-rg-tPD"/>
+                            <constraint firstItem="Fa8-3a-esf" firstAttribute="trailing" secondItem="zJh-Dj-ncq" secondAttribute="trailing" id="D0p-Nf-G3E"/>
                             <constraint firstItem="zJh-Dj-ncq" firstAttribute="top" secondItem="vlb-GV-MEA" secondAttribute="bottom" constant="10" id="FtQ-jR-0vJ"/>
+                            <constraint firstItem="Fa8-3a-esf" firstAttribute="bottom" secondItem="zJh-Dj-ncq" secondAttribute="bottom" id="IWI-6g-t8a"/>
                             <constraint firstItem="lio-4N-ORr" firstAttribute="top" secondItem="oCm-WI-gHB" secondAttribute="bottom" constant="10" id="Iuc-i3-hxG"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="UYd-vJ-r5c" secondAttribute="trailing" constant="10" id="OHK-sr-IP8"/>
                             <constraint firstItem="zJh-Dj-ncq" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Pr4-NK-zx2"/>
@@ -127,7 +137,9 @@
                             <constraint firstItem="WBd-7s-Pij" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="Y6G-a3-3qe"/>
                             <constraint firstItem="WBd-7s-Pij" firstAttribute="centerY" secondItem="oCm-WI-gHB" secondAttribute="centerY" id="cpW-HO-BEd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="zJh-Dj-ncq" secondAttribute="bottom" constant="10" id="gCv-i0-D3R"/>
+                            <constraint firstItem="Fa8-3a-esf" firstAttribute="top" secondItem="zJh-Dj-ncq" secondAttribute="top" id="gmO-hC-aKe"/>
                             <constraint firstItem="Lpl-nB-hrR" firstAttribute="leading" secondItem="WBd-7s-Pij" secondAttribute="leading" id="jep-Jv-ZHl"/>
+                            <constraint firstItem="Fa8-3a-esf" firstAttribute="leading" secondItem="zJh-Dj-ncq" secondAttribute="leading" id="lO6-zR-AcP"/>
                             <constraint firstItem="vlb-GV-MEA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lio-4N-ORr" secondAttribute="bottom" constant="20" id="p5d-UM-iaf"/>
                             <constraint firstItem="UYd-vJ-r5c" firstAttribute="centerY" secondItem="lio-4N-ORr" secondAttribute="centerY" id="qid-ih-EzT"/>
                             <constraint firstItem="Lpl-nB-hrR" firstAttribute="centerY" secondItem="lio-4N-ORr" secondAttribute="centerY" id="u48-Cc-f9y"/>
