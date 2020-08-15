@@ -13,6 +13,11 @@ typealias  ImageCompletion  = (UIImage?) -> Void
  This class adds a blur layer on top of its contents to blur iteslf and it's subviews by a variable amount.
  It is similar to the blur effect created by a UIVisualEffectView, but it provides a variable blur amount. It also blurs the view and it's subviews rather than blurring the content that appears under it.
 
+        properties:
+            - updateBlurImage: An optional completion handler which is invoked when blurring is complete.
+            - blur: Bool. Set to true to show the blur layer, false to disable blurring.
+            - updateBlurImage: An optional completion handler that gets called when an updated blur image is generated.
+            - blurLevel: CGFloat: The blur radius to apply. 0 = no blur. Default value = 10
  */
 class BlurView: UIView {
 
@@ -28,24 +33,24 @@ class BlurView: UIView {
         }
     }
 
-    //MARK: This controls the blur radius for the blur. 0 = no blur. Larger values = more blur. Default = 10
+    /**This controls the blur radius for the blur. 0 = no blur. Larger values = more blur. Default = 10
+ */
     public var blurLevel: CGFloat = 10 {
         didSet {
             applyBlur()
         }
     }
 
-    lazy var blurLayer: CALayer = {
+    private lazy var blurLayer: CALayer = {
         let newLayer = CALayer()
         newLayer.isOpaque = true
+        self.clipsToBounds = true
+        self.layer.addSublayer(newLayer)
         return newLayer
     }()
 
     override func awakeFromNib() {
-        self.layer.addSublayer(blurLayer)
-        self.clipsToBounds = true
     }
-
 
 
     override var bounds: CGRect {
@@ -67,12 +72,14 @@ class BlurView: UIView {
         })
     }
 
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
+/**
+     Creates a blurred image from the contents of the view's layer hierarchy, and  invokes a completion handler when the blur is complete.
+     - parameters:
+        - level: The blur radius to apply. Set to true to show the blur layer, false to disable blurring.
+        - context: The CIContext in which to do the rendering
+        - completed: a completion handler to invoke with the blurred image
 
+     */
     private func makeBlurredImage(with level: CGFloat, context: CIContext, completed: @escaping (UIImage?) -> Void) {
         // screen shot
         layer.isOpaque = true
