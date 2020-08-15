@@ -20,11 +20,13 @@ class BlurView: UIView {
 
     override func awakeFromNib() {
         self.layer.addSublayer(blurLayer)
+        self.clipsToBounds = true
     }
 
    public var blur: Bool = true {
         didSet {
             blurLayer.isHidden = !blur
+            applyBlur()
         }
     }
 
@@ -36,16 +38,23 @@ class BlurView: UIView {
 
     override var frame: CGRect {
         didSet {
-            blurLayer.frame = self.bounds
-            applyBlur()
+            print("Frame = \(frame)")
         }
     }
 
-    func applyBlur() {
+    public func handleResize()
+    {
+        blurLayer.frame = self.bounds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+            self.applyBlur()
+        }
+    }
+
+    public func applyBlur() {
         let context = CIContext(options: nil)
-        blurLayer.contents = nil
 
         self.makeBlurredImage(with: blurLevel, context: context, completed: { processedImage in
+            self.blurLayer.contents = nil
             self.blurLayer.contents = processedImage?.cgImage
             self.updateBlurImage?(processedImage)
         })
@@ -60,13 +69,15 @@ class BlurView: UIView {
     private func makeBlurredImage(with level: CGFloat, context: CIContext, completed: @escaping (UIImage?) -> Void) {
         // screen shot
         layer.isOpaque = true
+        blurLayer.isHidden = true
         UIGraphicsBeginImageContextWithOptions(self.frame.size, false, 1)
         self.layer.render(in: UIGraphicsGetCurrentContext()!)
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+        blurLayer.isHidden = !blur
         let beginImage = CIImage(image: resultImage)
 
-        guard level != 0 else {
+        guard level != 0  && blur else {
             completed(resultImage)
             return
         }

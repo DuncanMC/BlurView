@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var picView: UIImageView!
     @IBOutlet weak var blurSwitch: UISwitch!
     @IBOutlet weak var blurSlider: UISlider!
     @IBOutlet weak var blurView: BlurView!
@@ -32,9 +33,17 @@ class ViewController: UIViewController {
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-       blurView.applyBlur()
+    override func viewDidLayoutSubviews() {
+        blurView.handleResize()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        blurView.applyBlur()
+        UIView.animate(withDuration: 0.2, delay: 0.5, options: [], animations: {
+            self.blurView.alpha = 1 },
+                       completion: nil
+        )
+    }
+
     @IBAction func handleBlurSwitch(_ sender: Any) {
         blurView.blur = blurSwitch.isOn
     }
