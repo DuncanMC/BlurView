@@ -10,6 +10,7 @@ import UIKit
 typealias  ImageCompletion  = (UIImage?) -> Void
 
 /**
+ Class BlurView:
  This class adds a blur layer on top of its contents to blur iteslf and it's subviews by a variable amount.
  It is similar to the blur effect created by a UIVisualEffectView, but it provides a variable blur amount. It also blurs the view and it's subviews rather than blurring the content that appears under it.
 
