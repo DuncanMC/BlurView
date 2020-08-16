@@ -42,6 +42,12 @@ class BlurView: UIView {
         }
     }
 
+    public var brightnestAdjustment: CGFloat = 0 {
+        didSet {
+            applyBlur()
+        }
+    }
+
     private lazy var blurLayer: CALayer = {
         let newLayer = CALayer()
         newLayer.isOpaque = true
@@ -99,20 +105,29 @@ class BlurView: UIView {
 
 
         //Clamp the image
-        guard let clampFilter = CIFilter(name: "CIAffineClamp") else {
-            fatalError()
+        guard let clampFilter = CIFilter(name: "CIAffineClamp"),
+            let brightnessFilter = CIFilter(name: "CIExposureAdjust"),
+            let blurFilter = CIFilter(name: "CIGaussianBlur"),
+            let cropFilter = CIFilter(name: "CICrop")
+            else {
+                fatalError()
         }
         clampFilter.setValue(beginImage, forKey: kCIInputImageKey)
         clampFilter.setValue(CGAffineTransform.identity, forKey: kCIInputTransformKey)
         var output = clampFilter.outputImage
 
-        let blurFilter = CIFilter(name: "CIGaussianBlur")!
         blurFilter.setValue(level, forKey: kCIInputRadiusKey)
         blurFilter.setValue(output, forKey: kCIInputImageKey)
+        output = blurFilter.outputImage
+
+        if brightnestAdjustment != 0 {
+            brightnessFilter.setValue(output, forKey: kCIInputImageKey)
+            brightnessFilter.setValue(brightnestAdjustment, forKey:  kCIInputEVKey)
+            output = brightnessFilter.outputImage
+        }
 
 
-        let cropFilter = CIFilter(name: "CICrop")!
-        cropFilter.setValue(blurFilter.outputImage, forKey: kCIInputImageKey)
+        cropFilter.setValue(output, forKey: kCIInputImageKey)
         cropFilter.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
 
         output = cropFilter.outputImage

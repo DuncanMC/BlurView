@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var blurView: BlurView!
     @IBOutlet weak var blurOutputImageView: UIImageView!
     @IBOutlet weak var radiusLabel: UITextField!
+    @IBOutlet weak var brightnessValueField: UITextField!
 
     var radiusValue: CGFloat = 0 {
         didSet {
@@ -25,12 +26,17 @@ class ViewController: UIViewController {
         }
     }
 
+    var brightnessValue: CGFloat = 0 {
+        didSet {
+            brightnessValueField.text = String(format: "%.2f", brightnessValue)
+            blurView.brightnestAdjustment = brightnessValue
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        radiusValue = 0.1
-        blurView.updateBlurImage = { image in
-            self.blurOutputImageView.image = image
-        }
+        radiusValue = 0.0
+        brightnessValue = 0
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -39,6 +45,10 @@ class ViewController: UIViewController {
             self.blurView.alpha = 1 },
                        completion: nil
         )
+        blurView.updateBlurImage = { image in
+            self.blurOutputImageView.image = image
+            self.blurView.updateBlurImage = nil
+        }
     }
 
     @IBAction func handleBlurSwitch(_ sender: Any) {
@@ -55,7 +65,13 @@ extension ViewController: UITextFieldDelegate {
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        radiusValue = min(max(CGFloat(Float(radiusLabel.text ?? "0.1") ?? 0), 0), 100)
+        if textField == radiusLabel {
+        radiusValue = min(max(CGFloat(Float(textField.text ?? "0.1") ?? 0), 0), 100)
+        } else if textField == brightnessValueField {
+            brightnessValue = min(
+                max(CGFloat(Float(textField.text ?? "0") ?? 0), -3)
+                , 3)
+        }
         return true
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
