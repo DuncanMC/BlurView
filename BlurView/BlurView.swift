@@ -26,16 +26,22 @@ class BlurView: UIView {
     public var updateBlurImage: ImageCompletion? = nil
 
 
-   //MARK: Set blur = true to add a blur layer, blur = false to disable view blurring
-   public var blur: Bool = true {
+    //MARK: Set blur = true to add a blur layer, blur = false to disable view blurring
+    public var blur: Bool = true {
         didSet {
             blurLayer.isHidden = !blur
             applyBlur()
         }
     }
 
+    public var useCIFilter: Bool = true {
+        didSet {
+            applyBlur()
+        }
+    }
+
     /**This controls the blur radius for the blur. 0 = no blur. Larger values = more blur. Default = 10
- */
+     */
     public var blurLevel: CGFloat = 10 {
         didSet {
             applyBlur()
@@ -79,12 +85,12 @@ class BlurView: UIView {
         })
     }
 
-/**
+    /**
      Creates a blurred image from the contents of the view's layer hierarchy, and  invokes a completion handler when the blur is complete.
      - parameters:
-        - level: The blur radius to apply. Set to true to show the blur layer, false to disable blurring.
-        - context: The CIContext in which to do the rendering
-        - completed: a completion handler to invoke with the blurred image
+     - level: The blur radius to apply. Set to true to show the blur layer, false to disable blurring.
+     - context: The CIContext in which to do the rendering
+     - completed: a completion handler to invoke with the blurred image
 
      */
     private func makeBlurredImage(with level: CGFloat, context: CIContext, completed: @escaping (UIImage?) -> Void) {
@@ -96,53 +102,61 @@ class BlurView: UIView {
         let resultImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         blurLayer.isHidden = !blur
-        let beginImage = CIImage(image: resultImage)
+
 
         guard level != 0  && blur else {
             completed(resultImage)
             return
         }
 
+        if !useCIFilter {
+            let result = resultImage.applyBlurWithRadius(level, tintColor: UIColor(white: 1.0, alpha: 0.4), saturationDeltaFactor: 0.8)
 
-        //Clamp the image
-        guard let clampFilter = CIFilter(name: "CIAffineClamp"),
-            let brightnessFilter = CIFilter(name: "CIExposureAdjust"),
-            let blurFilter = CIFilter(name: "CIGaussianBlur"),
-            let cropFilter = CIFilter(name: "CICrop")
-            else {
-                fatalError()
-        }
-        clampFilter.setValue(beginImage, forKey: kCIInputImageKey)
-        clampFilter.setValue(CGAffineTransform.identity, forKey: kCIInputTransformKey)
-        var output = clampFilter.outputImage
+//            let result = resultImage.applyBlurWithRadius(level, tintColor: nil, saturationDeltaFactor: 1.0)
+            completed(result)
+        } else {
+            let beginImage = CIImage(image: resultImage)
 
-        blurFilter.setValue(level, forKey: kCIInputRadiusKey)
-        blurFilter.setValue(output, forKey: kCIInputImageKey)
-        output = blurFilter.outputImage
+            //Clamp the image
+            guard let clampFilter = CIFilter(name: "CIAffineClamp"),
+                let brightnessFilter = CIFilter(name: "CIExposureAdjust"),
+                let blurFilter = CIFilter(name: "CIGaussianBlur"),
+                let cropFilter = CIFilter(name: "CICrop")
+                else {
+                    fatalError()
+            }
+            clampFilter.setValue(beginImage, forKey: kCIInputImageKey)
+            clampFilter.setValue(CGAffineTransform.identity, forKey: kCIInputTransformKey)
+            var output = clampFilter.outputImage
 
-        if brightnestAdjustment != 0 {
-            brightnessFilter.setValue(output, forKey: kCIInputImageKey)
-            brightnessFilter.setValue(brightnestAdjustment, forKey:  kCIInputEVKey)
-            output = brightnessFilter.outputImage
-        }
+            blurFilter.setValue(level, forKey: kCIInputRadiusKey)
+            blurFilter.setValue(output, forKey: kCIInputImageKey)
+            output = blurFilter.outputImage
+
+            if brightnestAdjustment != 0 {
+                brightnessFilter.setValue(output, forKey: kCIInputImageKey)
+                brightnessFilter.setValue(brightnestAdjustment, forKey:  kCIInputEVKey)
+                output = brightnessFilter.outputImage
+            }
 
 
-        cropFilter.setValue(output, forKey: kCIInputImageKey)
-        cropFilter.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
+            cropFilter.setValue(output, forKey: kCIInputImageKey)
+            cropFilter.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
 
-        output = cropFilter.outputImage
-        var cgimg: CGImage?
-        var extent: CGRect?
+            output = cropFilter.outputImage
+            var cgimg: CGImage?
+            var extent: CGRect?
 
-        let global = DispatchQueue.global(qos: .userInteractive)
+            let global = DispatchQueue.global(qos: .userInteractive)
 
-        global.async {
-            extent = output!.extent
-            cgimg = context.createCGImage(output!, from: extent!)!
-            let processedImage = UIImage(cgImage: cgimg!)
+            global.async {
+                extent = output!.extent
+                cgimg = context.createCGImage(output!, from: extent!)!
+                let processedImage = UIImage(cgImage: cgimg!)
 
-            DispatchQueue.main.async {
-                completed(processedImage)
+                DispatchQueue.main.async {
+                    completed(processedImage)
+                }
             }
         }
     }

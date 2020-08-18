@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var blurOutputImageView: UIImageView!
     @IBOutlet weak var radiusLabel: UITextField!
     @IBOutlet weak var brightnessValueField: UITextField!
+    @IBOutlet weak var ciFilterSwitch: UISwitch!
 
     var radiusValue: CGFloat = 0 {
         didSet {
@@ -51,6 +52,9 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func handleCIFilterSwitch(_ sender: Any) {
+        blurView.useCIFilter = ciFilterSwitch.isOn
+    }
     @IBAction func handleBlurSwitch(_ sender: Any) {
         blurView.blur = blurSwitch.isOn
     }
